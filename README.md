@@ -1,5 +1,5 @@
 # how to use
-input your webm
-input the audio url
-???
-profit
+1. input your webm
+2. input the audio url
+3. ???
+4. profit
