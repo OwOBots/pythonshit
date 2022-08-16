@@ -9,7 +9,6 @@ from urllib.parse import urlparse
 video = input("the name of the webm= ")
 audio = input("audio url= ")
 audiodecoded = unquote(audio)
-videogif = video
 codec = "libvpx-vp9"
 outputfile = input("what name do you want= ")
 
@@ -22,6 +21,7 @@ def get_ext(url):
 
 
 ifaudionotogg = get_ext(audiodecoded)
+ifvideogif = video
 
 if ifaudionotogg.endswith('.mp3'):
     subprocess.run(
@@ -32,5 +32,8 @@ elif ifaudionotogg.endswith('.ogg'):
 elif ifaudionotogg.endswith('.wav'):
     subprocess.run(
         f"ffmpeg -i {video} -i {audiodecoded} -c:v {codec} {outputfile}")
+elif ifvideogif.endswith('.gif'):
+    subprocess.run(
+        f"ffmpeg -r 1 -loop 1 -i {video} -i {audiodecoded}  -c:v {codec} {outputfile}")
 else:
     print('somethings wrong')
