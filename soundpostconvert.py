@@ -1,8 +1,6 @@
 # vars
-#import ffmpeg
 from curses import endwin
 from tkinter import E
-import filetype
 import subprocess
 import requests
 from urllib.parse import unquote
@@ -11,11 +9,8 @@ from urllib.parse import urlparse
 video = input("the name of the webm= ")
 audio = input("audio url= ")
 audiodecoded = unquote(audio)
-r = requests.get(audiodecoded)
-head = r.content[:10]
 videogif = video
-codec = "copy"
-codecifgif = "libvpx-vp9"
+codec = "libvpx-vp9"
 outputfile = input("what name do you want= ")
 
 
@@ -34,13 +29,8 @@ if ifaudionotogg.endswith('.mp3'):
 elif ifaudionotogg.endswith('.ogg'):
     subprocess.run(
         f"ffmpeg -i {video} -i {audiodecoded} -c {codec} {outputfile}")
+elif ifaudionotogg.endswith('.wav'):
+    subprocess.run(
+        f"ffmpeg -i {video} -i {audiodecoded} -c:v {codec} {outputfile}")
 else:
     print('somethings wrong')
-
-ifvideogif = videogif
-
-if ifvideogif.endswith('.gif'):
-    subprocess.run(
-        f"ffmpeg -i {video} -i {audiodecoded} -c {codecifgif} {outputfile}")
-else:
-    print("bruh")
