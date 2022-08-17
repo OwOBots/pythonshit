@@ -1,5 +1,7 @@
 # vars
 from curses import endwin
+import os
+import sys
 from tkinter import E
 import subprocess
 import requests
