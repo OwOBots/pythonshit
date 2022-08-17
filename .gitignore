@@ -1,3 +1,5 @@
 #no tests here pls
 *.webm
 *.txt
+-loop
+-i
