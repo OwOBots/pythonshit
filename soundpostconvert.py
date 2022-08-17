@@ -1,10 +1,5 @@
 # vars
-from curses import endwin
-import os
-import sys
-from tkinter import E, Scale
 import subprocess
-import requests
 from urllib.parse import unquote
 from os.path import splitext
 from urllib.parse import urlparse
