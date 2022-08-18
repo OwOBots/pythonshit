@@ -1,12 +1,9 @@
-import os
 import glob
-import re
 import subprocess
 from urllib.parse import urlparse
 from urllib.parse import unquote
 from os.path import splitext
 import pathlib
-import fnmatch
 video = input('Wheres your webm?= ')
 audio = input('Wheres your audio?= ')
 codemp3 = "libvpx"
