@@ -61,12 +61,12 @@ def videochecker():
         scale = input("format is x:x= ")
         time = input("how long is your audio")
         subprocess.run(
-            f"ffmpeg  -loop 1 -r 1 -i {video} -i {audiodecoded} -c:v {codemp3} -t {time} -pix_fmt yuv420p -vf scale={scale} {outputfile}")
+            f"ffmpeg  -loop 1 -r 1 -i {video} -i {audiodecoded} -c:v {codemp3} -t {time} -pix_fmt yuva420p -vf scale={scale} {outputfile}")
     elif ifvideogif.endswith('.gif'):
         scale = input("format is x:x= ")
         time = input("how long is your audio= ")
         subprocess.run(
-            f"ffmpeg -ignore_loop 0 -i {video} -i {audiodecoded} -c:v libvpx -crf 12 -b:v 500K -auto-alt-ref 0 {outputfile}")
+            f"ffmpeg -ignore_loop 0 -c:v {codemp3} -i {video}  -i {audiodecoded}  -t {time} -auto-alt-ref 0 -pix_fmt yuva420p  -crf 12 -b:v 500K  {outputfile}")
     else:
         audiostuff()
 
