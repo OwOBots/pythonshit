@@ -1,20 +1,21 @@
-# vars
-import subprocess
-from urllib.parse import unquote
-import wget
-from os.path import splitext
-from urllib.parse import urlparse
 import os
-video = input("the name of the webm= ")
-audio = input("audio url= ")
-audiodecoded = unquote(audio)
+import glob
+import re
+import subprocess
+from urllib.parse import urlparse
+from urllib.parse import unquote
+from os.path import splitext
+import pathlib
+import fnmatch
+video = input('Wheres your webm?= ')
+audio = input('Wheres your audio?= ')
+codemp3 = "libvpx"
 codec = "copy"
-codemp3 = "libvpx-vp9"
-outputfile = input("what name do you want= ")
-# this is just used in the png checker
-#outputpng = input("what ext do you want= ")
-
-
+audiodecoded = unquote(audio)
+output = input('Name pls= ')
+project_files = glob.glob('*.webm') + glob.glob('*.png') + glob.glob('*.gif')
+file_path = video
+extension = pathlib.Path(file_path).suffix
 def get_ext(url):
     """Return the filename extension from url, or ''."""
     parsed = urlparse(url)
@@ -22,69 +23,32 @@ def get_ext(url):
     return ext  # or ext[1:] if you don't want the leading '.'
 
 
-ifaudionotogg = get_ext(audiodecoded)
-ifaudiolocal = get_ext(audio)
-ifvideogif = video
-
-# this dont work
-def convertifnotsupported():
-    if audiodecoded.startswith('https://'):
-        filename = wget.download(audiodecoded)
-        subprocess.run(
-            f"ffmpeg -i {filename} -c:a libvorbis out.ogg")
-    elif not audiodecoded.startswith('https://'):
-        subprocess.run(
-            f"ffmpeg -i {audio} -c:a libvorbis out.ogg")
-    else:
-        audiostuff()
-
-
-def audiostuff():
-    if audiodecoded.startswith('https://'):
-        if ifaudionotogg.endswith('.mp3'):
+audioinput = get_ext(audiodecoded)
+localaudioinput = get_ext(audio)
+def videotest():
+    for ext in project_files:
+        if ext.endswith('.png'):
+                time = input("the format for time is XX:XX:XX= ")
+                subprocess.run(
+                f"ffmpeg -framerate 30 -i {video} -i {audiodecoded} -t {time} -c:v {codemp3} -pix_fmt yuv420p  -movflags fast -y {output}")
+        break
+       
+def gifs():
+    for ext in project_files:
+        if ext.endswith(".gif"):
+                time = input("the format for time is XX:XX:XX= ")
+                subprocess.run(
+            f"ffmpeg -ignore_loop 0 -i {video} -i {audiodecoded} -t {time}   {output}")
+        break             
+            
+def realvideos():
+    for ext in project_files:
+        if ext.endswith('.webm'):
+            time = input("the format for time is XX:XX:XX= ")
             subprocess.run(
-                f"ffmpeg -i {video} -i {audiodecoded} -c:v {codemp3} {outputfile}")
-        elif ifaudionotogg.endswith('.ogg'):
-            subprocess.run(
-                f"ffmpeg  -i {video} -i {audiodecoded} -c {codec} {outputfile}")
-        elif ifaudionotogg.endswith('.wav'):
-            subprocess.run(
-                f"ffmpeg -i {video} -i {audiodecoded} -c:v {codec} {outputfile}")
-        else:
-            print('somethings wrong')
-    else:
-        localfile()
+            f"ffmpeg -t {time} -i {video}  -i {audiodecoded} -c:v {codemp3} -movflags fast  -y {output}")
+        break
 
-
-def videochecker():
-    if ifvideogif.endswith('.png'):
-        scale = input("format is x:x= ")
-        time = input("how long is your audio")
-        subprocess.run(
-            f"ffmpeg  -loop 1 -r 1 -i {video} -i {audiodecoded} -c:v {codemp3} -t {time} -pix_fmt yuva444p -vf scale={scale} {outputfile}")
-    elif ifvideogif.endswith('.gif'):
-        scale = input("format is x:x= ")
-        time = input("how long is your audio= ")
-        subprocess.run(
-            #todo: fix transparency 
-            f"ffmpeg -ignore_loop 0  -i {video}  -i {audiodecoded}  -c:v libvpx -t {time} -auto-alt-ref 0 -pix_fmt yuva420p -crf 12 -b:v 500K  {outputfile}")
-    else:
-        audiostuff()
-
-
-def localfile():
-    if ifaudiolocal.endswith('.mp3'):
-        subprocess.run(
-            f"ffmpeg -i {video} -i {audio} -c:v {codemp3} {outputfile}")
-    elif ifaudiolocal.endswith('.ogg'):
-        subprocess.run(
-            f"ffmpeg -i {video} -i {audio} -c:v {codec} {outputfile}")
-    elif ifaudiolocal.endswith('.flac'):
-        convertifnotsupported()
-        subprocess.run(
-            f"ffmpeg -i {video} -i out.ogg -c:v {codec} {outputfile}")
-    else:
-        print('uh oh someone did a fucky wucky')
-
-
-videochecker()
+videotest()
+realvideos()
+gifs()
