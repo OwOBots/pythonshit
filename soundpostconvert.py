@@ -23,6 +23,7 @@ def get_ext(url):
 audioinput = get_ext(audiodecoded)
 localaudioinput = get_ext(audio)
 def videotest():
+    print('png')
     for ext in project_files:
         if ext.endswith('.png'):
                 time = input("the format for time is XX:XX:XX= ")
@@ -30,15 +31,8 @@ def videotest():
                 f"ffmpeg -framerate 30 -i {video} -i {audiodecoded} -t {time} -c:v {codemp3} -pix_fmt yuv420p  -movflags fast -y {output}")
         break
        
-def gifs():
-    for ext in project_files:
-        if ext.endswith(".gif"):
-                time = input("the format for time is XX:XX:XX= ")
-                subprocess.run(
-            f"ffmpeg -ignore_loop 0 -i {video} -i {audiodecoded} -t {time}   {output}")
-        break             
-            
 def realvideos():
+    print('webm')
     for ext in project_files:
         if ext.endswith('.webm'):
             time = input("the format for time is XX:XX:XX= ")
@@ -46,6 +40,6 @@ def realvideos():
             f"ffmpeg -t {time} -i {video}  -i {audiodecoded} -c:v {codemp3} -movflags fast  -y {output}")
         break
 
+
 videotest()
 realvideos()
-gifs()
