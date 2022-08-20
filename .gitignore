@@ -21,3 +21,10 @@ requirements.txt
 requirements.txt
 slen.mp4
 __pycache__
+egg.txt
+-i
+-movflags
+ffmpeg_log.txt
+-framerate
+ffmpeg_output
+-re
