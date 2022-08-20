@@ -1,55 +1,61 @@
-# vars
-from curses import endwin
-import os
-import sys
-from tkinter import E, Scale
+import glob
 import subprocess
-import requests
+from urllib.parse import urlparse
 from urllib.parse import unquote
 from os.path import splitext
-from urllib.parse import urlparse
-video = input("the name of the webm= ")
-audio = input("audio url= ")
-audiodecoded = unquote(audio)
+import os
+import pathlib
+import gif
+
+video = input('Wheres your webm?= ')
+audio = input('Wheres your audio?= ')
+output = input('Name pls= ')
+codemp3 = "libvpx"
 codec = "copy"
-codemp3 = "libvpx-vp9"
-outputfile = input("what name do you want= ")
-#this is just used in the png checker
-#outputpng = input("what ext do you want= ")
+audiodecoded = unquote(audio)
 
-
-
+def suffix():
+    project_files = glob.glob('*.webm') + glob.glob('*.png') + glob.glob('*.gif')
+    file_path = video
+    extension = pathlib.Path(file_path).suffix
 def get_ext(url):
     """Return the filename extension from url, or ''."""
     parsed = urlparse(url)
     root, ext = splitext(parsed.path)
     return ext  # or ext[1:] if you don't want the leading '.'
+extra = get_ext(video)
 
 
 
 
+audioinput = get_ext(audiodecoded)
+localaudioinput = get_ext(audio)
+def videotest():
+    if video.endswith('.png'):
+                time = input("the format for time is XX:XX:XX= ")
+                subprocess.run(
+                f'ffmpeg -framerate 30 -i "{video}" -i {audiodecoded} -t {time} -c:v {codemp3} -pix_fmt yuv420p  -movflags fast -y {output}')
+                quit()
+    else:
+            pass
         
 
-ifaudionotogg = get_ext(audiodecoded)
-ifvideogif = video
-def audiostuff():
-    if ifaudionotogg.endswith('.mp3'):
-        subprocess.run(
-        f"ffmpeg -i {video} -i {audiodecoded} -c:v {codemp3} {outputfile}")
-    elif ifaudionotogg.endswith('.ogg'):
-        subprocess.run(
-        f"ffmpeg  -i {video} -i {audiodecoded} -c {codec} {outputfile}")
-    elif ifaudionotogg.endswith('.wav'):
-        subprocess.run(
-        f"ffmpeg -i {video} -i {audiodecoded} -c:v {codec} {outputfile}")
+def realvideos():
+    if video.endswith('.webm'):
+            time = input("the format for time is XX:XX:XX= ")
+            subprocess.run(
+            f"ffmpeg -t {time} -i {video}  -i {audiodecoded} -c:v {codemp3} -movflags fast  -y {output}")
+            quit()
     else:
-        print('somethings wrong')
-def videochecker():
-    if ifvideogif.endswith('.png'):
-        scale = input("format is x:x= ")
-        subprocess.run(
-        f"ffmpeg  -loop 1 -r 1 -i {video} -i {audiodecoded} -c:v {codemp3} -t 00:06:04 -pix_fmt yuv420p -vf scale={scale} {outputfile}")    
-    else:
-        audiostuff()
+        pass
 
-videochecker()
+def videoshit():
+    video 
+    if video.endswith('.gif'):
+        gif.merge_audio_and_gif(video,audiodecoded,output)
+        quit()
+    else:
+        pass
+videotest()
+videoshit()
+realvideos()
