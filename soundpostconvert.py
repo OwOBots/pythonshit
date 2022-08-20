@@ -5,12 +5,12 @@ from urllib.parse import unquote
 from os.path import splitext
 import os
 import pathlib
-import gif
+import fileformats
 
 video = input('Wheres your webm?= ')
 audio = input('Wheres your audio?= ')
 output = input('Name pls= ')
-codemp3 = "libvpx"
+codemp3 = "libvpx-vp9"
 codec = "copy"
 audiodecoded = unquote(audio)
 
@@ -30,12 +30,11 @@ extra = get_ext(video)
 
 audioinput = get_ext(audiodecoded)
 localaudioinput = get_ext(audio)
-def videotest():
+def png():
     if video.endswith('.png'):
-                time = input("the format for time is XX:XX:XX= ")
-                subprocess.run(
-                f'ffmpeg -framerate 30 -i "{video}" -i {audiodecoded} -t {time} -c:v {codemp3} -pix_fmt yuv420p  -movflags fast -y {output}')
-                quit()
+        print('egg')
+        fileformats.merge_audio_and_png(video,audiodecoded,output)
+        quit()
     else:
             pass
         
@@ -44,18 +43,17 @@ def realvideos():
     if video.endswith('.webm'):
             time = input("the format for time is XX:XX:XX= ")
             subprocess.run(
-            f"ffmpeg -t {time} -i {video}  -i {audiodecoded} -c:v {codemp3} -movflags fast  -y {output}")
+            f'ffmpeg -v quiet -hide_banner -stats -t {time} -i "{video}"  -i {audiodecoded} -c:v {codemp3} -movflags fast  -y {output}')
             quit()
     else:
         pass
 
-def videoshit():
-    video 
+def videoshit(): 
     if video.endswith('.gif'):
-        gif.merge_audio_and_gif(video,audiodecoded,output)
+        fileformats.merge_audio_and_gif(video,audiodecoded,output)
         quit()
     else:
         pass
-videotest()
+png()
 videoshit()
 realvideos()
